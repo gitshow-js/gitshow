@@ -1,0 +1,35 @@
+{
+  "name": "gitshow",
+  "version": "0.0.1",
+  "description": "Presentation maker from git source files",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp serve",
+    "build": "gulp build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/radkovo/gitshow.git"
+  },
+  "author": "Radek Burget",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/radkovo/gitshow/issues"
+  },
+  "homepage": "https://github.com/radkovo/gitshow#readme",
+  "dependencies": {
+    "reveal.js": "^4.4.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.0",
+    "gulp": "^4.0.2",
+    "gulp-connect": "^5.7.0",
+    "rollup": "^3.17.2",
+    "yargs": "^17.7.1"
+  }
+}
