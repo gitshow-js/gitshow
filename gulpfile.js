@@ -1,4 +1,5 @@
 const yargs = require('yargs')
+const fs = require('fs')
 
 const {rollup} = require('rollup')
 const terser = require('@rollup/plugin-terser').default
@@ -9,11 +10,13 @@ const resolve = require('@rollup/plugin-node-resolve').default
 const gulp = require('gulp')
 //const zip = require('gulp-zip')
 const connect = require('gulp-connect')
+const replace = require('gulp-replace')
 
 const root = yargs.argv.root || '.'
 const port = yargs.argv.port || 8000
 const host = yargs.argv.host || 'localhost'
 const srcdir = yargs.argv.src || '/home/burgetr/tmp/gitshow'
+const destdir = yargs.argv.dest || './dist'
 
 
 // Prevents warnings from opening too many test pages
@@ -53,6 +56,12 @@ babelConfigESM.presets[0][1].targets = { browsers: [
 let cache = {};
 let banner = '/* GitShow */\n';
 
+const configFile = srcdir + '/presentation.json';
+
+loadConfig = function() {
+    return JSON.parse(fs.readFileSync(configFile));
+}
+
 // Creates a bundle with broad browser support, exposed
 // as UMD
 gulp.task('js-es5', () => {
@@ -69,7 +78,7 @@ gulp.task('js-es5', () => {
         cache.umd = bundle.cache;
         return bundle.write({
             name: 'GitShow',
-            file: './dist/gitshow.js',
+            file: destdir + '/gitshow.js',
             format: 'umd',
             banner: banner,
             sourcemap: true
@@ -91,16 +100,58 @@ gulp.task('js-es6', () => {
     }).then( bundle => {
         cache.esm = bundle.cache;
         return bundle.write({
-            file: './dist/gitshow.esm.js',
+            file: destdir + '/gitshow.esm.js',
             format: 'es',
             banner: banner,
             sourcemap: true
         });
     });
 })
-gulp.task('js', gulp.parallel('js-es5', 'js-es6'));
+gulp.task('js', gulp.parallel('js-es5'/*, 'js-es6'*/));
 
-gulp.task('build', gulp.parallel('js'))
+gulp.task('css-reveal', () => {
+    return gulp.src(['node_modules/reveal.js/dist/**.css'])
+        .pipe(gulp.dest(destdir + '/css'))
+});
+gulp.task('css-themes', () => {
+    return gulp.src(['node_modules/reveal.js/dist/theme/**/*'])
+        .pipe(gulp.dest(destdir + '/css/theme'))
+});
+gulp.task('css', gulp.parallel('css-reveal', 'css-themes'));
+
+gulp.task('config', () => {
+    return gulp.src(configFile)
+        .pipe(gulp.dest(destdir + ''))
+});
+
+gulp.task('index', () => {
+    const cfg = loadConfig();
+    return gulp.src('index.html')
+        .pipe(replace('{{TITLE}}', cfg.title))
+        .pipe(replace('{{LANG}}', cfg.lang))
+        .pipe(replace('{{CONFIG}}', JSON.stringify(cfg)))
+        .pipe(gulp.dest(destdir))
+});
+
+gulp.task('contents', () => {
+    const cfg = loadConfig();
+    let paths = [];
+    for (let src of cfg.contents) {
+        if (src.startsWith('/')) {
+            paths.push(src);
+        } else {
+            paths.push(srcdir + '/' + src);
+        }
+    }
+    return gulp.src(paths)
+        .pipe(gulp.dest(destdir));
+});
+gulp.task('assets', () => {
+    return gulp.src([srcdir + '/assets/**/*'])
+        .pipe(gulp.dest(destdir + '/assets'))
+});
+
+gulp.task('build', gulp.parallel('config', 'index', 'css', 'js', 'contents', 'assets'));
 
 /*gulp.task('package', gulp.series(() =>
 
@@ -125,14 +176,15 @@ gulp.task('reload', () => gulp.src(['*.html', '*.md'])
 gulp.task('serve', () => {
 
     connect.server({
-        root: [root, srcdir],
+        root: [destdir],
         port: port,
         host: host,
         livereload: true
     })
 
-    gulp.watch(['*.html', '*.md'], gulp.series('reload'))
-    gulp.watch([srcdir + '/*.html', srcdir + '/*.md', srcdir + '/*.js'], gulp.series('reload'))
+    gulp.watch(['*.html', '*.md'], gulp.series('index', 'reload'));
+    gulp.watch([srcdir + '/*.html', srcdir + '/*.md'], gulp.series('contents', 'reload'));
+    gulp.watch([srcdir + '/*.json'], gulp.series('config', 'index', 'reload'));
 
     gulp.watch(['js/**'], gulp.series('js', 'reload'))
 

@@ -29,6 +29,7 @@
     "@rollup/plugin-terser": "^0.4.0",
     "gulp": "^4.0.2",
     "gulp-connect": "^5.7.0",
+    "gulp-replace": "^1.1.4",
     "rollup": "^3.17.2",
     "yargs": "^17.7.1"
   }

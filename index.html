@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="{{LANG}}">
 <head>
     <meta charset="utf-8">
-    <title>GitShow</title>
+    <title>{{TITLE}}</title>
 
-    <link rel="stylesheet" href="/node_modules/reveal.js/dist/reveal.css">
-    <link rel="stylesheet" href="/node_modules/reveal.js/dist/theme/black.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
 
 </head>
 <body id="gitshow-main">
@@ -20,9 +20,9 @@
         </div>
     </div>
 
-    <script src="presentation.js"></script>
-    <script src="dist/gitshow.js"></script>
+    <script src="gitshow.js"></script>
     <script>
+        const presentationConfig = JSON.parse('{{CONFIG}}');
         let gitShow = new GitShow();
         gitShow.init();
     </script>
