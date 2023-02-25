@@ -109,6 +109,41 @@ gulp.task('js-es6', () => {
 })
 gulp.task('js', gulp.parallel('js-es5'/*, 'js-es6'*/));
 
+// Plugins are not being built automatically at the moment but this task is prepared
+gulp.task('plugins', () => {
+    return Promise.all([
+        { name: 'RevealRewrite', input: './js/plugin/rewrite/plugin.js', output: './js/plugin/rewrite/rewrite' },
+        { name: 'RevealReferences', input: './js/plugin/references/plugin.js', output: './js/plugin/references/references' },
+    ].map( plugin => {
+        return rollup({
+                cache: cache[plugin.input],
+                input: plugin.input,
+                plugins: [
+                    resolve(),
+                    commonjs(),
+                    babel({
+                        ...babelConfig,
+                        ignore: [/node_modules\/(?!(highlight\.js|marked)\/).*/],
+                    }),
+                    terser()
+                ]
+            }).then( bundle => {
+                cache[plugin.input] = bundle.cache;
+                bundle.write({
+                    file: plugin.output + '.esm.js',
+                    name: plugin.name,
+                    format: 'es'
+                })
+
+                bundle.write({
+                    file: plugin.output + '.js',
+                    name: plugin.name,
+                    format: 'umd'
+                })
+            });
+    } ));
+})
+
 gulp.task('css-reveal', () => {
     return gulp.src(['node_modules/reveal.js/dist/**.css'])
         .pipe(gulp.dest(destdir + '/css'))
