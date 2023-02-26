@@ -1,0 +1,237 @@
+.reveal-viewport {
+  background: #fafafa;
+}
+
+html.print-pdf .reveal .slides section .fragment { /* show fragments when printing */
+  opacity: 1;
+  visibility: visible;
+}
+
+.reveal .slides section {
+  --fit-blue: #174f86;
+  height: 100%;
+  text-align: left;
+  border: none;
+  padding: 0;
+}
+
+.reveal .slides section header {
+  background-color: var(--fit-blue);
+  color: white;
+  padding: 1em 0.5em;
+}
+
+.reveal .slides section h1 {
+  font-size: 2em;
+  text-transform: none;
+  color: white;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: initial;
+}
+
+.reveal .slides section .content {
+  padding: 1em;
+  line-height: 1.5;
+  font-size: 1.2em;
+}
+
+.reveal .slides section footer {
+  background-color: var(--fit-blue);
+  color: white;
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 5px 1em;
+  font-size: 75%;
+}
+
+.reveal .slides section footer .slideno {
+  float: right;
+  margin-right: 1em;
+}
+
+.reveal .slides section pre {
+  font-size: 100%;
+}
+
+.reveal .slides a {
+  text-decoration: underline;
+}
+
+.reveal ul ul {
+  margin-left: 1.5em;
+}
+
+.reveal pre {
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.9);
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.reveal pre code {
+    font-size: 0.75em;
+    max-height: 500px;
+    line-height: 1.2;
+}
+
+.reveal .large {
+  font-size: 250%;
+}
+
+.reveal .grey {
+  color: #777;
+}
+
+.reveal .minus {
+  color: #a00;
+}
+
+.reveal .plus {
+  color: #0a0;
+}
+
+.reveal code {
+  color: var(--fit-blue);
+}
+
+.reveal .cite {
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.9);
+  padding: 0.5em;
+  margin: 1em;
+  font-size: 75%;
+}
+
+.reveal .shadow {
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.9);
+  font-size: 75%;
+}
+
+.reveal .col {
+  width: 45%;
+  float: left;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.reveal ol, .reveal dl, .reveal ul {
+  display: block; /* change reveal's inline-block because of floating images */
+}
+
+/* ==== References ====*/
+
+.reveal .r-ref {
+  color: var(--fit-blue);
+  border-bottom: 1px dotted;
+}
+
+.reveal .r-refs {
+  font-size: 60%;
+  overflow: auto;
+  height: 800px;
+  margin: 0;
+  padding-left: 1em;
+}
+
+.reveal .r-refs li {
+  list-style-type: none;
+  list-style-position: inside;
+}
+
+.reveal .r-refs li::before {
+  content: '[' attr(data-index) '] ';
+  margin-left: -1em;
+}
+
+
+/* ==== Title slide ====*/
+
+.reveal .slides section.title {
+  color: var(--fit-blue);
+}
+
+.reveal .slides section.title .logo {
+  background: var(--fit-blue) url('fitlogo.png') 1.5em 50% no-repeat;
+  background-size: 18%;
+  height: 33%;
+}
+
+.reveal .slides section.title .main {
+  padding: 2em 0 0 2em;
+}
+
+.reveal .slides section.title header {
+  padding-left: 0;
+  margin-bottom: 2em;
+  background-color: transparent;
+  color: var(--fit-blue);
+}
+
+.reveal .slides section.title header h1 {
+  font-size: 2em;
+  color: var(--fit-blue);
+}
+
+.reveal .slides section.title .subtitle {
+  padding: 0;
+  font-size: 100%;
+}
+
+.reveal .slides section.title .author {
+  padding: 0;
+  font-size: 120%;
+}
+
+.reveal .slides section.title .affil {
+  padding: 0;
+  font-size: 80%;
+}
+
+/* ==== Section slide ====*/
+
+.reveal .slides section.section {
+  color: black;
+}
+
+.reveal .slides section.section header {
+  background: transparent;
+  color: black;
+  margin: 8em 4em;
+  font-size: 120%;
+}
+
+.reveal .slides section.section header h1 {
+  color: var(--fit-blue);
+}
+
+/* ==== Centered slide ====*/
+
+.reveal .slides section.centered .content {
+  text-align: center;
+}
+
+.reveal .slides section.fullspace .content {
+  padding: 0;
+}
+
+
+/*
+Rewrite:
+
+{
+  "pattern": "$", 
+  "result": "</div><footer>{{footer}} <span class=\"slideno\">{{totalIndex}} / {{totalSlides}}</span></footer>"
+},
+{ 
+  "pattern": "<h1", 
+  "result": "<header><h1"
+},
+{
+  "pattern": "</h1>", 
+  "result": "</h1></header><div class=\"content\">"
+}
+
+*/

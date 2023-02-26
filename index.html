@@ -6,7 +6,6 @@
 
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/sky.css">
 
 </head>
 <body id="gitshow-main">
@@ -25,7 +24,7 @@
     <script>
         const presentationConfig = JSON.parse('{{CONFIG}}');
         let gitShow = new GitShow();
-        gitShow.init();
+        gitShow.init(presentationConfig);
     </script>
 </body>
 </html>

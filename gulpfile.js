@@ -186,7 +186,18 @@ gulp.task('assets', () => {
         .pipe(gulp.dest(destdir + '/assets'))
 });
 
-gulp.task('build', gulp.parallel('config', 'index', 'css', 'js', 'contents', 'assets'));
+gulp.task('template', () => {
+    const cfg = loadConfig();
+    let templateName = 'default';
+    if (cfg.template && cfg.template.name) {
+        templateName = cfg.template.name;
+    }
+    return gulp.src(['./templates/' + templateName + '/**/*'])
+        .pipe(gulp.dest(destdir + '/template'))
+});
+
+
+gulp.task('build', gulp.parallel('config', 'index', 'css', 'js', 'contents', 'assets', 'template'));
 
 /*gulp.task('package', gulp.series(() =>
 
@@ -222,5 +233,6 @@ gulp.task('serve', () => {
     gulp.watch([srcdir + '/*.json'], gulp.series('config', 'index', 'reload'));
 
     gulp.watch(['js/**'], gulp.series('js', 'reload'))
+    gulp.watch(['templates/**'], gulp.series('template', 'reload'))
 
 })
