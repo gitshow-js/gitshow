@@ -12,6 +12,8 @@ const gulp = require('gulp')
 const connect = require('gulp-connect')
 const replace = require('gulp-replace')
 
+const puppeteer = require('puppeteer');
+
 const root = yargs.argv.root || '.'
 const port = yargs.argv.port || 8000
 const host = yargs.argv.host || 'localhost'
@@ -220,19 +222,52 @@ gulp.task('reload', () => gulp.src(['*.html', '*.md'])
     .pipe(connect.reload()));
 
 gulp.task('serve', () => {
+    return new Promise(async (resolve, reject) => {
+        connect.server({
+            root: [destdir],
+            port: port,
+            host: host,
+            livereload: true
+        });
 
-    connect.server({
-        root: [destdir],
-        port: port,
-        host: host,
-        livereload: true
-    })
+        gulp.watch(['*.html', '*.md'], gulp.series('index', 'reload'));
+        gulp.watch(['*.html', '*.md'], {cwd: srcdir}, gulp.series('contents', 'reload'));
+        gulp.watch(['*.json'], {cwd: srcdir}, gulp.series('config', 'index', 'reload'));
 
-    gulp.watch(['*.html', '*.md'], gulp.series('index', 'reload'));
-    gulp.watch(['*.html', '*.md'], {cwd: srcdir}, gulp.series('contents', 'reload'));
-    gulp.watch(['*.json'], {cwd: srcdir}, gulp.series('config', 'index', 'reload'));
+        gulp.watch(['js/**'], gulp.series('js', 'reload'))
+        gulp.watch(['templates/**'], gulp.series('template', 'reload'))
 
-    gulp.watch(['js/**'], gulp.series('js', 'reload'))
-    gulp.watch(['templates/**'], gulp.series('template', 'reload'))
+        resolve();
+    });
+});
 
-})
+async function createPdf() {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    console.log('Opening the presentation')
+    await page.goto('http://localhost:8000?print-pdf', {
+      waitUntil: 'networkidle2',
+    });
+    console.log('Creating PDF')
+    await page.pdf({
+      path: 'dist/presentation.pdf',
+      printBackground: true,
+      preferCSSPageSize: true
+    });
+    console.log('Closing')
+    await browser.close();
+}
+
+gulp.task('pdf', () => {
+    return new Promise(async (resolve, reject) => {
+        connect.server({
+            root: [destdir],
+            port: 8000,
+            host: 'localhost'
+        });
+
+        await createPdf();
+        connect.serverClose();
+        resolve();
+    });
+});
