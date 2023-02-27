@@ -8,7 +8,7 @@ const commonjs = require('@rollup/plugin-commonjs')
 const resolve = require('@rollup/plugin-node-resolve').default
 
 const gulp = require('gulp')
-//const zip = require('gulp-zip')
+const zip = require('gulp-zip')
 const connect = require('gulp-connect')
 const replace = require('gulp-replace')
 
@@ -201,22 +201,14 @@ gulp.task('template', () => {
 
 gulp.task('build', gulp.parallel('config', 'index', 'css', 'js', 'contents', 'assets', 'template'));
 
-/*gulp.task('package', gulp.series(() =>
-
-    gulp.src(
-        [
-            './index.html',
-            './dist/**',
-            './lib/**',
-            './images/**',
-            './plugin/**',
-            './**.md'
-        ],
-        { base: './' }
-    )
-    .pipe(zip('reveal-js-presentation.zip')).pipe(gulp.dest('./'))
-
-))*/
+gulp.task('package', () => {
+    const cfg = loadConfig();
+    let presId = cfg.id || 'presentation';
+    let destFile = presId + '.zip';
+    console.log('Creating package in ' + srcdir + '/' + destFile);
+    return gulp.src([destdir + '/**'])
+        .pipe(zip(destFile)).pipe(gulp.dest(srcdir + '/'));
+});
 
 gulp.task('reload', () => gulp.src(['*.html', '*.md'])
     .pipe(connect.reload()));
@@ -241,7 +233,7 @@ gulp.task('serve', () => {
     });
 });
 
-async function createPdf() {
+async function createPdf(presId) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     console.log('Opening the presentation')
@@ -250,7 +242,7 @@ async function createPdf() {
     });
     console.log('Creating PDF')
     await page.pdf({
-      path: 'dist/presentation.pdf',
+      path: srcdir + '/' + presId + '.pdf',
       printBackground: true,
       preferCSSPageSize: true
     });
@@ -259,6 +251,8 @@ async function createPdf() {
 }
 
 gulp.task('pdf', () => {
+    const cfg = loadConfig();
+    let presId = cfg.id || 'presentation';
     return new Promise(async (resolve, reject) => {
         connect.server({
             root: [destdir],
@@ -266,7 +260,7 @@ gulp.task('pdf', () => {
             host: 'localhost'
         });
 
-        await createPdf();
+        await createPdf(presId);
         connect.serverClose();
         resolve();
     });

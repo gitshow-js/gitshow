@@ -37,6 +37,7 @@ case $CMD in
         ;;
     package)
         npm run build -- --src="$SRCDIR" --dest="$DESTDIR"
+        npm run package -- --src="$SRCDIR" --dest="$DESTDIR"
         ;;
     pdf)
         npm run build -- --src="$SRCDIR" --dest="$DESTDIR"
