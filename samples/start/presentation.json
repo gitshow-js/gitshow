@@ -1,0 +1,22 @@
+{
+    "id": "presentation",
+    "title": "Sample Presentation",
+    "author": "Radek Burget",
+    "lang": "en",
+    "template": {
+        "name": "default",
+        "properties": {
+            "theme": "moon",
+            "highlight": "googlecode"
+        }
+    },
+    "reveal": {
+        "center": true,
+        "hash": true
+    },
+    "contents": [
+        "10intro.md",
+        "20content.md",
+        "99final.md"
+    ]
+}
