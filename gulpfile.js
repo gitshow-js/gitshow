@@ -15,7 +15,7 @@ const replace = require('gulp-replace')
 const root = yargs.argv.root || '.'
 const port = yargs.argv.port || 8000
 const host = yargs.argv.host || 'localhost'
-const srcdir = yargs.argv.src || '/home/burgetr/tmp/gitshow'
+const srcdir = yargs.argv.src || '.'
 const destdir = yargs.argv.dest || './dist'
 
 
