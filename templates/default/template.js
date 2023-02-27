@@ -10,6 +10,9 @@ const Template = () => {
         if (cfg.template?.properties?.theme) {
             show.addStyle('css/theme/' + cfg.template.properties.theme + '.css');
         }
+        if (cfg.template?.properties?.highlight) {
+            show.addStyle('template/' + cfg.template.properties.highlight + '.css');
+        }
     }
 
     return {

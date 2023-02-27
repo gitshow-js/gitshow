@@ -80,6 +80,9 @@ const Template = () => {
         if (cfg.template?.properties?.footer) {
             rewriteConfig.properties.footer = cfg.template?.properties?.footer;
         }
+        if (cfg.template?.properties?.highlight) {
+            show.addStyle('template/' + cfg.template.properties.highlight + '.css');
+        }
         show.getRevealConfig().rewrite = rewriteConfig;
     }
 
