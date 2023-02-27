@@ -7,7 +7,7 @@ const Template = () => {
 
     function initTemplate(show) {
         let cfg = show.getPresentationConfig();
-        if (cfg.template.properties.theme) {
+        if (cfg.template?.properties?.theme) {
             show.addStyle('css/theme/' + cfg.template.properties.theme + '.css');
         }
     }

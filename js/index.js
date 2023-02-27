@@ -11,9 +11,6 @@ import Templates from '../templates/templates.js';
 
 //let RevealSpotlight = require('./plugin/spotlight/spotlight.js');
 
-/*<script src="plugin/rewrite/rewrite.js"></script>
-<script src="plugin/references/references.js"></script>*/
-
 
 class GitShow {
     

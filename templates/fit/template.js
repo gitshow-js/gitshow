@@ -7,7 +7,7 @@ const Template = () => {
 
     let rewriteConfig = {
         properties: {
-            footer: 'Semantic Web Technology and the Web of Documents | Radek Burget | May 26, 2021'
+            footer: ''
         },
         rules: [
             /* typography */
@@ -76,6 +76,10 @@ const Template = () => {
     function initTemplate(show) {
         show.addStyle('css/theme/sky.css');
         show.addStyle('template/fit.css');
+        const cfg = show.getPresentationConfig();
+        if (cfg.template?.properties?.footer) {
+            rewriteConfig.properties.footer = cfg.template?.properties?.footer;
+        }
         show.getRevealConfig().rewrite = rewriteConfig;
     }
 
