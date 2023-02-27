@@ -16,7 +16,7 @@ Just clone the project from git:
 git clone https://github.com/radkovo/gitshow.git
 ```
 
-The cloned project contains the `gitshow.sh` script which invokes all the functions (see below).
+The cloned project contains the [gitshow.sh](https://github.com/radkovo/gitshow/blob/main/gitshow.sh) script which invokes all the functions (see below).
 
 ## Usage
 
@@ -30,7 +30,7 @@ cd my-presentation
 gitshow.sh init
 ```
 
-The `presentation.json` file now contains the presentation configuration. Edit the configuration and markdown files to add some content to the presentation. See the `reveal.js documentation` for information on how to use markdown in the presentation.
+The `presentation.json` file now contains the presentation configuration. Edit the configuration and markdown files to add some content to the presentation. See the [reveal.js documentation](https://revealjs.com/markdown/) for information on how to use markdown in the presentation.
 
 Get a live preview of the presentation by running
 
