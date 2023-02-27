@@ -229,8 +229,8 @@ gulp.task('serve', () => {
     })
 
     gulp.watch(['*.html', '*.md'], gulp.series('index', 'reload'));
-    gulp.watch([srcdir + '/*.html', srcdir + '/*.md'], gulp.series('contents', 'reload'));
-    gulp.watch([srcdir + '/*.json'], gulp.series('config', 'index', 'reload'));
+    gulp.watch(['*.html', '*.md'], {cwd: srcdir}, gulp.series('contents', 'reload'));
+    gulp.watch(['*.json'], {cwd: srcdir}, gulp.series('config', 'index', 'reload'));
 
     gulp.watch(['js/**'], gulp.series('js', 'reload'))
     gulp.watch(['templates/**'], gulp.series('template', 'reload'))
