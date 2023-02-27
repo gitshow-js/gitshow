@@ -5,6 +5,18 @@
 
 const Template = () => {
 
+    // preferred Reveal.js config to be used by this template
+    let preferredRevealConfig = {
+        width: 1920,
+        height: 1080,
+        margin: 0,
+
+        hash: true,
+        center: false,
+        pdfMaxPagesPerSlide: 1,
+        pdfSeparateFragments: false,
+    };
+
     let rewriteConfig = {
         properties: {
             footer: ''
@@ -83,7 +95,8 @@ const Template = () => {
         if (cfg.template?.properties?.highlight) {
             show.addStyle('template/' + cfg.template.properties.highlight + '.css');
         }
-        show.getRevealConfig().rewrite = rewriteConfig;
+        show.updateRevealConfig(preferredRevealConfig);
+        show.updateRevealConfig({rewrite: rewriteConfig});
     }
 
     return {

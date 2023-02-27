@@ -17,13 +17,19 @@ class GitShow {
     presentationConfig = {};
     template = null;
 
+    /*
+        Reveal.js configuration is taken from the following sources (in the following order)
+        1. The default config below
+        2. Each template can update the config via updateRevealConfig()
+        3. The presentation may upadte the config in the 'reveal' section of presentation.json.
+    */
     revealConfig = {
         width: 1920,
         height: 1080,
         margin: 0,
 
         hash: true,
-        center: false,
+        center: true,
         pdfMaxPagesPerSlide: 1,
         pdfSeparateFragments: false,
 
@@ -43,6 +49,9 @@ class GitShow {
             if (config.template && config.template.name) {
                 this.initTemplate(config.template.name);
             }
+            if (config.reveal) {
+                this.updateRevealConfig(config.reveal);
+            }
             this.runReveal();
         } else {
             this.showError('Presentation config not found.');
@@ -55,6 +64,10 @@ class GitShow {
 
     getRevealConfig() {
         return this.revealConfig;
+    }
+
+    updateRevealConfig(newConfig) {
+        this.revealConfig = {...this.revealConfig, ...newConfig};
     }
 
     addStyle(path) {
