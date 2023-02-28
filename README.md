@@ -1,8 +1,8 @@
-# GitShow - A presentation maker from markdown source files
+# GitShow - Create presentations from Markdown sources
 
 GitShow provides a simple wrapper that generates a [Reveal.js](https://revealjs.com) presentation from a set of plain markdown files. It allows to maintain the presentation sources separately (e.g. in a git repository) and to automatically generate a static reveal.js bundle or a PDF file from them without installing a new copy of reveal.js for each presentation. See the [sample presentation](https://github.com/radkovo/gitshow/tree/main/samples/start) for an example of a source presentation.
 
-This tool is intended for developers who are able to use `reveal.js` alone and need some additional automation. It assumes a working knowledge of Markdown, HTML, CSS, JavaScript, and other related technologies.
+GitShow allows to avoid the complexity of Reveal.js by providing a pre-configured (but still configurable) environment where the author can focus on creating mardown files (which can even be done directly on GitHub). Knowledge of HTML, CSS, JavaScript, and other related technologies is not required, but very helpful.
 
 ## Requirements
 
