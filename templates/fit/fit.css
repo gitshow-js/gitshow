@@ -117,6 +117,14 @@ html.print-pdf .reveal .slides section .fragment { /* show fragments when printi
   margin-right: 2%;
 }
 
+.reveal .slides .small {
+  font-size: 85%;
+}
+
+.reveal .slides section pre.small {
+  font-size: 85%; /* small code snippets */
+}
+
 .reveal ol, .reveal dl, .reveal ul {
   display: block; /* change reveal's inline-block because of floating images */
 }
