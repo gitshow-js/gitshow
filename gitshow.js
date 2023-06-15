@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
+const fs = require('fs-extra');
+const os = require('os');
 const path = require('path');
+const commands = require(__dirname + '/src/commands.js');
 
 const HELP = `Usage: gitshow.sh <command> [<source_path>]
 Commands:
@@ -19,7 +21,6 @@ if (args.length == 0) {
     process.exit(1);
 }
 
-const destdir = './dist';
 const cmd = args[0];
 let srcdir = process.cwd();
 if (args.length > 1) {
@@ -27,6 +28,9 @@ if (args.length > 1) {
 }
 
 console.log('Using source directory: %s', srcdir);
+
+// create temporary dest dir
+const destdir = fs.mkdtempSync(path.join(os.tmpdir(), 'gitshow'));
 
 // check the source project configuration
 if (cmd == 'init') {
@@ -42,3 +46,24 @@ else {
     }
 }
 
+// execute the command
+switch (cmd) {
+    case 'init':
+        commands.init(gspath, srcdir);
+        break;
+    case 'serve':
+        process.chdir(gspath);
+        commands.serve(gspath, srcdir, destdir);
+        break;
+    case 'package':
+        process.chdir(gspath);
+        commands.package(gspath, srcdir, destdir);
+        break;
+    case 'pdf':
+        process.chdir(gspath);
+        commands.pdf(gspath, srcdir, destdir);
+        break;
+    default:
+        console.error(`Unknown command: ${cmd}`);
+        break;
+}
