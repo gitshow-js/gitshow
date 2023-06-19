@@ -1,14 +1,13 @@
 {
   "name": "gitshow",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Presentation maker from git source files",
   "main": "index.js",
+  "bin": {
+    "gitshow": "./gitshow.js"
+  },
   "scripts": {
-    "start": "gulp serve",
-    "build": "gulp build",
-    "pdf": "gulp pdf",
-    "package": "gulp package",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -35,5 +34,13 @@
     "puppeteer": "^19.7.2",
     "reveal.js": "^4.4.0",
     "rollup": "^3.17.2"
+  },
+  "devDependencies": {
+    "release-it": "^15.11.0"
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    }
   }
 }
