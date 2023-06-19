@@ -1,12 +1,12 @@
 import TemplateDefault from "./default/template.js";
-import TemplateFit from "./fit/template.js";
+import TemplateClassic from "./classic/template.js";
 
 const Templates = () => {
     return {
         id: 'fit',
         index: {
             "default": TemplateDefault,
-            "fit": TemplateFit
+            "classic": TemplateClassic
         },
         init: function() {
         },

@@ -1,5 +1,5 @@
 /*
-    FIT template
+    Classic template with a header and footer.
     (c) 2022 Radek Burget
 */
 
@@ -87,7 +87,7 @@ const Template = () => {
 
     function initTemplate(show) {
         show.addStyle('css/theme/sky.css');
-        show.addStyle('template/fit.css');
+        show.addStyle('template/classic.css');
         const cfg = show.getPresentationConfig();
         if (cfg.template?.properties?.footer) {
             rewriteConfig.properties.footer = cfg.template?.properties?.footer;
