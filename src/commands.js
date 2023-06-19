@@ -280,7 +280,6 @@ gulp.task('cleanup', () => {
 module.exports = {
 
     init(gspath, srcdir) {
-        console.log(srcdir);
         if (!fs.existsSync(srcdir)) {
             fs.mkdirSync(srcdir, { recursive: true });
         }
