@@ -1,3 +1,11 @@
+/*
+ * GitShow
+ * (c) 2023 Radek Burget <burgetr@fit.vut.cz>
+ * 
+ * utils.js
+ * Utility functions.
+ * 
+ */
 const fs = require('fs-extra');
 
 const DEST = 'dist'; // target folder name
@@ -25,6 +33,11 @@ module.exports = {
         }
     },
 
+    /**
+     * Checks if the destination folder exists and tries to create it if it does not.
+     * @param {string} srcdir the project source folder path
+     * @returns the destination folder path
+     */
     checkDestFolder(srcdir) {
         const dest = srcdir + '/' + DEST;
         if (!fs.existsSync(dest)) {
@@ -37,6 +50,10 @@ module.exports = {
         return dest;
     },
 
+    /**
+     * Deletes the destination folder.
+     * @param {string} srcdir the project source folder path
+     */
     cleanDestFolder(srcdir) {
         const dest = srcdir + '/' + DEST;
         if (fs.existsSync(dest)) {

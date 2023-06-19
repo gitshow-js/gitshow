@@ -1,3 +1,11 @@
+/*
+ * GitShow
+ * (c) 2023 Radek Burget <burgetr@fit.vut.cz>
+ * 
+ * commands.js
+ * Implementation of the commands using gulp.
+ * 
+ */
 const fs = require('fs-extra');
 
 const {rollup} = require('rollup');

@@ -1,4 +1,12 @@
 #!/usr/bin/env node
+/*
+ * GitShow
+ * (c) 2023 Radek Burget <burgetr@fit.vut.cz>
+ * 
+ * gitshow.js
+ * The main srcipt.
+ * 
+ */
 
 const fs = require('fs-extra');
 const os = require('os');
