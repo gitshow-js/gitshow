@@ -5,6 +5,7 @@ const os = require('os');
 const path = require('path');
 const commands = require(__dirname + '/src/commands.js');
 
+const DEST = 'dist'; // target folder name
 const HELP = `Usage: gitshow.sh <command> [<source_path>]
 Commands:
   init -- create a new presentation
@@ -29,8 +30,8 @@ if (args.length > 1) {
 
 console.log('Using source directory: %s', srcdir);
 
-// create temporary dest dir
-const destdir = fs.mkdtempSync(path.join(os.tmpdir(), 'gitshow'));
+// create the dest dir
+const destdir = fs.mkdirSync(srcdir + '/' + DEST);
 
 // check the source project configuration
 if (cmd == 'init') {
