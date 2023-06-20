@@ -3,7 +3,7 @@ import TemplateClassic from "./classic/template.js";
 
 const Templates = () => {
     return {
-        id: 'fit',
+        id: 'templates',
         index: {
             "default": TemplateDefault,
             "classic": TemplateClassic

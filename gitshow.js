@@ -18,13 +18,14 @@ const utils = require(__dirname + '/src/utils.js');
 
 const HELP = `Usage: gitshow.sh <command> [<presentation_folder>]
 Commands:
-  init -- create a new presentation
+  init [-t template_name] -- create a new presentation
   serve -- run live server
   package -- package the complete presentation
   pdf -- create PDF
   clean -- clean the project (remove the generated files)
 
 If the presentation folder is not specified, the current folder is used.
+
 `;
 
 const gspath = __dirname;
