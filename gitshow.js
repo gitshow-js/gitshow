@@ -16,9 +16,11 @@ const yargs = require('yargs');
 const commands = require(__dirname + '/src/commands.js');
 const utils = require(__dirname + '/src/utils.js');
 
+const templates = require(__dirname + '/templates/templates.js');
+
 const HELP = `Usage: gitshow.sh <command> [<presentation_folder>]
 Commands:
-  init [-t template_name] -- create a new presentation
+  init [-t template] -- create a new presentation
   serve -- run live server
   package -- package the complete presentation
   pdf -- create PDF
@@ -26,13 +28,20 @@ Commands:
 
 If the presentation folder is not specified, the current folder is used.
 
-`;
+The template can be the name of a built-in template or the path to a custom template folder.`;
+
+let TEMPLATE_HELP = 'Available built-in templates:\n';
+for (let t in templates.index) {
+    TEMPLATE_HELP += t + ' -- ' + templates.index[t] + '\n';
+}
+
 
 const gspath = __dirname;
 const args = yargs.argv._;
 
 if (args.length == 0) {
     console.log(HELP);
+    console.log(TEMPLATE_HELP);
     process.exit(1);
 }
 

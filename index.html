@@ -21,11 +21,12 @@
         </div>
     </div>
 
+    <script src="template/template.js"></script>
     <script src="gitshow.js"></script>
     <script>
         const presentationConfig = JSON.parse('{{CONFIG}}');
         let gitShow = new GitShow();
-        gitShow.init(presentationConfig);
+        gitShow.init(presentationConfig, Template());
     </script>
 </body>
 </html>

@@ -7,8 +7,6 @@ import RevealMath from 'reveal.js/plugin/math/math.esm.js';
 import RevealRewrite from './plugin/rewrite/plugin.js';
 import RevealReferences from './plugin/references/plugin.js';
 
-import Templates from '../templates/templates.js';
-
 //let RevealSpotlight = require('./plugin/spotlight/spotlight.js');
 
 
@@ -36,7 +34,7 @@ class GitShow {
         plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealRewrite, RevealReferences ],
     };
 
-    init(config) { 
+    init(config, template) { 
         this.presentationConfig = config;
         console.log('Welcome to GitShow!');
         console.log('https://github.com/radkovo/gitshow');
@@ -46,9 +44,8 @@ class GitShow {
             if (config.contents.length > 0) {
                 this.createContent(config.contents);
             }
-            if (config.template && config.template.name) {
-                this.initTemplate(config.template.name);
-            }
+            this.template = template;
+            this.template.init(this);
             if (config.reveal) {
                 this.updateRevealConfig(config.reveal);
             }
@@ -76,17 +73,6 @@ class GitShow {
         link.setAttribute('rel', 'stylesheet');
         link.setAttribute('href', path);
         head.appendChild(link);
-    }
-
-    initTemplate(name) {
-        const templates = new Templates();
-        const Template = templates.index[name];
-        if (Template) {
-            this.template = new Template();
-            this.template.init(this);
-        } else {
-            console.warn('Unknown template "' + name + '"');
-        }
     }
 
     runReveal() {

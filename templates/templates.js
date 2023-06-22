@@ -1,16 +1,9 @@
-import TemplateDefault from "./default/template.js";
-import TemplateClassic from "./classic/template.js";
 
-const Templates = () => {
-    return {
-        id: 'templates',
-        index: {
-            "default": TemplateDefault,
-            "classic": TemplateClassic
-        },
-        init: function() {
-        },
-    }
-}
+const templates = {
+    'default': 'Default simple template',
+    'classic': 'A classic template with a header and footer'
+};
 
-export default Templates;
+module.exports = {
+    index: templates
+};
