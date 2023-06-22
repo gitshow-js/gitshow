@@ -1,0 +1,19 @@
+{
+    "id": "classic-sample",
+    "title": "Sample presentation",
+    "author": "John Doe",
+    "lang": "en",
+    "template": {
+        "name": "fit",
+        "properties": {
+            "footer": "Sample footer -- edit presentation.json",
+            "highlight": "googlecode"
+        }
+    },
+    "contents": [
+        "00title.md",
+        "10intro.md",
+        "20content.md",
+        "99final.md"
+    ]
+}

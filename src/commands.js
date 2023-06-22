@@ -27,6 +27,7 @@ let port = 8000;
 let host = 'localhost';
 let psrcdir = '.';
 let pdestdir = './dist';
+let ptemplate = './template';
 
 // gulp tasks
 
@@ -170,6 +171,7 @@ gulp.task('config', () => {
         .pipe(gulp.dest(pdestdir + ''))
 });
 
+// copies and configures the index file
 gulp.task('index', () => {
     const cfg = loadConfig();
     return gulp.src(root + '/index.html')
@@ -179,6 +181,7 @@ gulp.task('index', () => {
         .pipe(gulp.dest(pdestdir))
 });
 
+// copies the presentation contents to the destination folder
 gulp.task('contents', () => {
     const cfg = loadConfig();
     let paths = [];
@@ -192,21 +195,17 @@ gulp.task('contents', () => {
     return gulp.src(paths)
         .pipe(gulp.dest(pdestdir));
 });
+// copies the presentation assets to the destination folder
 gulp.task('assets', () => {
     return gulp.src([psrcdir + '/assets/**/*'])
         .pipe(gulp.dest(pdestdir + '/assets'))
 });
 
+// copies the template from current folder to the destination folder
 gulp.task('template', () => {
-    const cfg = loadConfig();
-    let templateName = 'default';
-    if (cfg.template && cfg.template.name) {
-        templateName = cfg.template.name;
-    }
-    return gulp.src([root + '/templates/' + templateName + '/**/*'])
+    return gulp.src([psrcdir + '/template/**/*'])
         .pipe(gulp.dest(pdestdir + '/template'))
 });
-
 
 gulp.task('build', gulp.parallel('config', 'index', 'css', 'js', 'contents', 'assets', 'template'));
 
@@ -275,6 +274,27 @@ gulp.task('pdf', () => {
     });
 });
 
+// initializes the local copy of the template
+gulp.task('init-all', () => {
+    return gulp.src([ptemplate + '/**/*'])
+        .pipe(gulp.dest(psrcdir))
+});
+
+// initializes the local copy of the template
+gulp.task('update-template', () => {
+    return gulp.src([ptemplate + 'template/**/*'])
+        .pipe(gulp.dest(psrcdir + '/template'))
+});
+
+// removes the local copy of the template
+gulp.task('clean-template', () => {
+    return new Promise(async (resolve, reject) => {
+        fs.removeSync(psrcdir + '/template');
+        resolve();
+    });
+});
+
+// removes the destination folder
 gulp.task('cleanup', () => {
     return new Promise(async (resolve, reject) => {
         console.log('clean ' + pdestdir);
@@ -287,11 +307,12 @@ gulp.task('cleanup', () => {
 
 module.exports = {
 
-    init(gspath, srcdir) {
-        if (!fs.existsSync(srcdir)) {
-            fs.mkdirSync(srcdir, { recursive: true });
-        }
-        fs.copySync(gspath + '/samples/start/', srcdir);
+    init(gspath, srcdir, templatePath) {
+        psrcdir = srcdir;
+        ptemplate = templatePath;
+        gulp.series([
+            gulp.task('init-all')
+        ])();
         console.log('Presentation created. See presentation.json for further configuration.');
     },
 
@@ -301,8 +322,7 @@ module.exports = {
         console.log('Build...');
         gulp.series([
             gulp.task('build'), 
-            gulp.task('serve'), 
-            //gulp.task('cleanup') //TODO
+            gulp.task('serve')
         ])();
     },
 

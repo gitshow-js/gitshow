@@ -42,6 +42,7 @@ module.exports = {
             console.error(`Couldn't find template ${templatePath}.`);
             process.exit(5);
         }
+        return templatePath;
     },
 
     /**
