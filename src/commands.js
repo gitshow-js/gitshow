@@ -282,7 +282,7 @@ gulp.task('init-all', () => {
 
 // initializes the local copy of the template
 gulp.task('update-template', () => {
-    return gulp.src([ptemplate + 'template/**/*'])
+    return gulp.src([ptemplate + '/template/**/*'])
         .pipe(gulp.dest(psrcdir + '/template'))
 });
 
@@ -313,7 +313,17 @@ module.exports = {
         gulp.series([
             gulp.task('init-all')
         ])();
+        fs.writeFileSync(psrcdir + '/.templatesrc', templatePath);
         console.log('Presentation created. See presentation.json for further configuration.');
+    },
+
+    reset(gspath, srcdir, templatePath) {
+        psrcdir = srcdir;
+        ptemplate = templatePath;
+        gulp.series([
+            gulp.task('clean-template'),
+            gulp.task('update-template')
+        ])();
     },
 
     serve(gspath, srcdir, destdir) {

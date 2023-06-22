@@ -2,3 +2,14 @@
 *.old
 *.bak
 .svn
+.templatesrc
+/dist
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*

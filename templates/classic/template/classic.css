@@ -162,7 +162,7 @@ html.print-pdf .reveal .slides section .fragment { /* show fragments when printi
 }
 
 .reveal .slides section.title .logo {
-  background: var(--fit-blue) url('Git-Icon-White.svg') 1.5em 50% no-repeat;
+  background: var(--fit-blue) url('logo.svg') 1.5em 50% no-repeat;
   background-size: 12%;
   height: 33%;
 }

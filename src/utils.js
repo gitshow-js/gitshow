@@ -45,6 +45,17 @@ module.exports = {
         return templatePath;
     },
 
+    readStoredTemplatePath(srcdir) {
+        if (fs.existsSync(srcdir + '/.templatesrc')) {
+            let templatePath = fs.readFileSync(srcdir + '/.templatesrc').toString().trim();
+            console.log('Reseting source template from ' + templatePath);
+            return templatePath;
+        } else {
+            console.error('Unknown template source. Please specify the source template using -t');
+            process.exit(6);
+        }
+    },
+
     /**
      * Checks if the destination folder exists and tries to create it if it does not.
      * @param {string} srcdir the project source folder path

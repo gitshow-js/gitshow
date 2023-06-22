@@ -21,6 +21,7 @@ const templates = require(__dirname + '/templates/templates.js');
 const HELP = `Usage: gitshow.sh <command> [<presentation_folder>]
 Commands:
   init [-t template] -- create a new presentation
+  reset [-t template] -- reset the used template
   serve -- run live server
   package -- package the complete presentation
   pdf -- create PDF
@@ -61,6 +62,15 @@ switch (cmd) {
         let templateSpec = yargs.argv.t || 'default';
         let templatePath = utils.checkTemplate(gspath, templates, templateSpec);
         commands.init(gspath, srcdir, templatePath);
+        break;
+    case 'reset':
+        utils.checkProjectConfig(srcdir, cmd);
+        let rtemplateSpec = yargs.argv.t;
+        if (!rtemplateSpec) {
+            rtemplateSpec = utils.readStoredTemplatePath(srcdir);
+        }
+        let rtemplatePath = utils.checkTemplate(gspath, templates, rtemplateSpec);
+        commands.reset(gspath, srcdir, rtemplatePath);
         break;
     case 'serve':
         utils.checkProjectConfig(srcdir, cmd);
