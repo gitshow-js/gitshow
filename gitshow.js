@@ -58,6 +58,8 @@ let destdir = '';
 switch (cmd) {
     case 'init':
         utils.checkProjectConfig(srcdir, cmd);
+        let templateSpec = yargs.argv.t || 'default';
+        utils.checkTemplate(gspath, templates, templateSpec);
         commands.init(gspath, srcdir);
         break;
     case 'serve':
