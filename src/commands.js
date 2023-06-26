@@ -69,103 +69,25 @@ let cache = {};
 let banner = '/* GitShow */\n';
 
 const configFile = 'presentation.json';
+const clientJsFile = 'gitshow.js';
 
 loadConfig = function() {
     return JSON.parse(fs.readFileSync(psrcdir + '/' + configFile));
 }
 
-// Creates a bundle with broad browser support, exposed
-// as UMD
-gulp.task('js-es5', () => {
-    return rollup({
-        cache: cache.umd,
-        input: root + '/js/index.js',
-        plugins: [
-            resolve(),
-            commonjs(),
-            babel( babelConfig ),
-            terser()
-        ]
-    }).then( bundle => {
-        cache.umd = bundle.cache;
-        return bundle.write({
-            name: 'GitShow',
-            file: pdestdir + '/gitshow.js',
-            format: 'umd',
-            banner: banner,
-            sourcemap: true
-        });
-    });
-})
+// Copies the pre-built client javascript
+gulp.task('js', () => {
+    return gulp.src(root + '/dist/' + clientJsFile)
+        .pipe(gulp.dest(pdestdir + ''))
+});
 
-// Creates an ES module bundle
-gulp.task('js-es6', () => {
-    return rollup({
-        cache: cache.esm,
-        input: 'js/index.js',
-        plugins: [
-            resolve(),
-            commonjs(),
-            babel( babelConfigESM ),
-            terser()
-        ]
-    }).then( bundle => {
-        cache.esm = bundle.cache;
-        return bundle.write({
-            file: pdestdir + '/gitshow.esm.js',
-            format: 'es',
-            banner: banner,
-            sourcemap: true
-        });
-    });
-})
-gulp.task('js', gulp.parallel('js-es5'/*, 'js-es6'*/));
-
-// Plugins are not being built automatically at the moment but this task is prepared
-gulp.task('plugins', () => {
-    return Promise.all([
-        { name: 'RevealRewrite', input: './js/plugin/rewrite/plugin.js', output: './js/plugin/rewrite/rewrite' },
-        { name: 'RevealReferences', input: './js/plugin/references/plugin.js', output: './js/plugin/references/references' },
-    ].map( plugin => {
-        return rollup({
-                cache: cache[plugin.input],
-                input: plugin.input,
-                plugins: [
-                    resolve(),
-                    commonjs(),
-                    babel({
-                        ...babelConfig,
-                        ignore: [/node_modules\/(?!(highlight\.js|marked)\/).*/],
-                    }),
-                    terser()
-                ]
-            }).then( bundle => {
-                cache[plugin.input] = bundle.cache;
-                bundle.write({
-                    file: plugin.output + '.esm.js',
-                    name: plugin.name,
-                    format: 'es'
-                })
-
-                bundle.write({
-                    file: plugin.output + '.js',
-                    name: plugin.name,
-                    format: 'umd'
-                })
-            });
-    } ));
-})
-
-gulp.task('css-reveal', () => {
-    return gulp.src([root + '/node_modules/reveal.js/dist/**.css'])
+// Copies the CSS files
+gulp.task('css', () => {
+    return gulp.src(root + '/dist/css/**/*')
         .pipe(gulp.dest(pdestdir + '/css'))
 });
-gulp.task('css-themes', () => {
-    return gulp.src([root + '/node_modules/reveal.js/dist/theme/**/*'])
-        .pipe(gulp.dest(pdestdir + '/css/theme'))
-});
-gulp.task('css', gulp.parallel('css-reveal', 'css-themes'));
 
+// Copies the config file
 gulp.task('config', () => {
     return gulp.src(psrcdir + '/' + configFile)
         .pipe(gulp.dest(pdestdir + ''))
@@ -329,7 +251,6 @@ module.exports = {
     serve(gspath, srcdir, destdir) {
         psrcdir = srcdir;
         pdestdir = destdir;
-        console.log('Build...');
         gulp.series([
             gulp.task('build'), 
             gulp.task('serve')
@@ -339,7 +260,6 @@ module.exports = {
     package(gspath, srcdir, destdir) {
         psrcdir = srcdir;
         pdestdir = destdir;
-        console.log('Build...');
         gulp.series([
             gulp.task('build'), 
             gulp.task('package'), 
@@ -350,7 +270,6 @@ module.exports = {
     pdf(gspath, srcdir, destdir) {
         psrcdir = srcdir;
         pdestdir = destdir;
-        console.log('Build...');
         gulp.series([
             gulp.task('build'), 
             gulp.task('pdf'), 
