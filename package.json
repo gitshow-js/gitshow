@@ -1,6 +1,6 @@
 {
   "name": "@burgetr/gitshow",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Presentation maker from git source files",
   "main": "index.js",
   "bin": {
