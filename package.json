@@ -1,5 +1,5 @@
 {
-  "name": "gitshow",
+  "name": "@burgetr/gitshow",
   "version": "1.0.1",
   "description": "Presentation maker from git source files",
   "main": "index.js",
@@ -49,5 +49,8 @@
     "git": {
       "requireBranch": "main"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
