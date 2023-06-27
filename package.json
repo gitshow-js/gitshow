@@ -7,7 +7,9 @@
     "gitshow": "./gitshow.js"
   },
   "scripts": {
+    "gitshow": "./gitshow.js",
     "build": "gulp build",
+    "postinstall": "gulp build",
     "release": "release-it"
   },
   "repository": {
