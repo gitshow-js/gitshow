@@ -13,7 +13,7 @@ GitShow requires `node.js` and `npm` installed (e.g. from [NodeSource](https://g
 Install the command line tool:
 
 ```bash
-npm install -g gitshow
+npm install -g @burgetr/gitshow
 ```
 
 ## Usage
