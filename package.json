@@ -1,6 +1,6 @@
 {
   "name": "gitshow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Presentation maker from git source files",
   "main": "index.js",
   "bin": {
