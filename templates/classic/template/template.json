@@ -1,0 +1,83 @@
+{
+    "id": "classic",
+    "description": "A classic template with a header and footer",
+    "properties": {
+        "footer": {
+            "description": "Footer text",
+            "default": ""
+        }
+    },
+    "baseTheme": "sky",
+    "styles": [ "classic.css", "googlecode.css" ],
+    "reveal": {
+        "width": 1920,
+        "height": 1080,
+        "margin": 0,
+        "hash": true,
+        "center": false,
+        "pdfMaxPagesPerSlide": 1,
+        "pdfSeparateFragments": false,
+        "rewrite": {
+            "properties": {
+                "footer": "${footer}"
+            },
+            "rules": [
+                {
+                    "pattern": "--",
+                    "result": "&ndash;",
+                    "flags": "g"
+                },
+                {
+                    "pattern": "\\.\\.\\.",
+                    "result": "&hellip;",
+                    "flags": "g"
+                },
+                {
+                    "pattern": "``",
+                    "result": "&bdquo;",
+                    "flags": "g"
+                },
+                {
+                    "pattern": "''",
+                    "result": "&ldquo;",
+                    "flags": "g"
+                },
+                {
+                    "pattern": "@@([^@]+)@@",
+                    "result": "<$1>",
+                    "flags": "g"
+                },
+                {
+                    "pattern": ">\\?\\?",
+                    "result": " class=\"fragment\">",
+                    "flags": "g"
+                },
+                {
+                    "pattern": "\\|\\|([^\\|]+)\\|\\|",
+                    "result": "<span class=\"fragment\">$1</span>",
+                    "flags": "g"
+                },
+                {
+                    "match": ".normal",
+                    "pattern": "$",
+                    "result": "</div><footer>{{footer}} <span class=\"slideno\">{{totalIndex}} / {{totalSlides}}</span></footer>"
+                },
+                {
+                    "match": ".section",
+                    "pattern": "$",
+                    "result": "</div><footer>{{footer}} <span class=\"slideno\">{{totalIndex}} / {{totalSlides}}</span></footer>"
+                },
+                {
+                    "match": ".normal",
+                    "pattern": "<h1",
+                    "result": "<header><h1"
+                },
+                {
+                    "match": ".normal",
+                    "pattern": "</h1>",
+                    "result": "</h1></header><div class=\"content\">"
+                }
+            ]
+        }
+    }
+}

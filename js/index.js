@@ -11,7 +11,7 @@ import RevealReferences from './plugin/references/plugin.js';
 
 
 class GitShow {
-    
+
     presentationConfig = {};
     template = null;
 
@@ -31,10 +31,10 @@ class GitShow {
         pdfMaxPagesPerSlide: 1,
         pdfSeparateFragments: false,
 
-        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealRewrite, RevealReferences ],
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealRewrite, RevealReferences],
     };
 
-    init(config, template) { 
+    init(config, templateData) {
         this.presentationConfig = config;
         console.log('Welcome to GitShow!');
         console.log('https://github.com/radkovo/gitshow');
@@ -44,8 +44,8 @@ class GitShow {
             if (config.contents.length > 0) {
                 this.createContent(config.contents);
             }
-            this.template = template;
-            this.template.init(this);
+            this.template = this.parseTemplate(templateData, config);
+            this.useTemplate(this.template);
             if (config.reveal) {
                 this.updateRevealConfig(config.reveal);
             }
@@ -54,7 +54,59 @@ class GitShow {
             this.showError('Presentation config not found.');
         }
     }
-    
+
+    parseTemplate(templateData, config) {
+        let template = JSON.parse(templateData);
+        if (config.template?.properties) {
+            template = this.replacePlaceholders(template, config.template.properties);
+        }
+        return template;
+    }
+
+    replacePlaceholders(template, properties) {
+        if (typeof template === 'string') {
+            let exactMatch = template.match(/\${(.*?)}/);
+            if (exactMatch) { // exact match - return the property value
+                return properties[exactMatch[1]] || exactMatch[0];
+            } else { // replace in a string
+                return template.replace(/\${(.*?)}/g, (match, propertyName) => {
+                    return properties[propertyName] || match;
+                });
+            }
+        } else if (Array.isArray(template)) {
+            return template.map(item => this.replacePlaceholders(item, properties));
+        } else if (typeof template === 'object' && template !== null) {
+            const result = {};
+            for (const key in template) {
+                if (template.hasOwnProperty(key)) {
+                    result[key] = this.replacePlaceholders(template[key], properties);
+                }
+            }
+            return result;
+        } else {
+            return template;
+        }
+    }
+
+    useTemplate(template) {
+        console.log("USE");
+        console.log(template);
+        // use base CSS
+        if (template.baseTheme) {
+            this.addStyle('/css/theme/' + template.baseTheme + '.css');
+        }
+        // use custom styles
+        if (template.styles) {
+            for (let sname of template.styles) {
+                this.addStyle('template/' + sname);
+            }
+        }
+        // update reveal config
+        if (template.reveal) {
+            this.updateRevealConfig(template.reveal);
+        }
+    }
+
     getPresentationConfig() {
         return this.presentationConfig;
     }
@@ -64,7 +116,7 @@ class GitShow {
     }
 
     updateRevealConfig(newConfig) {
-        this.revealConfig = {...this.revealConfig, ...newConfig};
+        this.revealConfig = { ...this.revealConfig, ...newConfig };
     }
 
     addStyle(path) {

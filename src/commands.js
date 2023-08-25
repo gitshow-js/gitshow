@@ -75,6 +75,14 @@ loadConfig = function() {
     return JSON.parse(fs.readFileSync(psrcdir + '/' + configFile));
 }
 
+loadTemplate = function() {
+    return JSON.parse(fs.readFileSync(psrcdir + '/template/template.json'));
+}
+
+toJSONString = function(obj) {
+    return JSON.stringify(obj).replaceAll("\\", "\\\\").replaceAll("'", "\\'");
+}
+
 // Copies the pre-built client javascript
 gulp.task('js', () => {
     return gulp.src(root + '/dist/' + clientJsFile)
@@ -96,10 +104,12 @@ gulp.task('config', () => {
 // copies and configures the index file
 gulp.task('index', () => {
     const cfg = loadConfig();
+    const template = loadTemplate();
     return gulp.src(root + '/index.html')
         .pipe(replace('{{TITLE}}', cfg.title))
         .pipe(replace('{{LANG}}', cfg.lang))
-        .pipe(replace('{{CONFIG}}', JSON.stringify(cfg)))
+        .pipe(replace('{{CONFIG}}', toJSONString(cfg)))
+        .pipe(replace('{{TEMPLATE}}', toJSONString(template)))
         .pipe(gulp.dest(pdestdir))
 });
 

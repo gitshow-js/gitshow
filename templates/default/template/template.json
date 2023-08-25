@@ -1,0 +1,12 @@
+{
+    "id": "default",
+    "description": "Default simple template",
+    "baseTheme": "${theme}",
+    "properties": {
+        "theme": {
+            "description": "Base Reveal.js theme",
+            "default": "white"
+        }
+    },
+    "styles": [ "googlecode.css" ]
+}
