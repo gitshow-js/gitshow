@@ -57,6 +57,23 @@ module.exports = {
     },
 
     /**
+     * Checks if the presentation source folder exists and tries to create it if it does not.
+     * @param {string} srcdir the project source folder path
+     * @returns the source folder path
+     */
+    checkSrcFolder(srcdir) {
+        const dest = srcdir;
+        if (!fs.existsSync(dest)) {
+            fs.mkdirSync(dest);
+            if (!fs.existsSync(dest)) {
+                console.error(`Couldn't create the source folder ${dest}. Aborting.`);
+                process.exit(4);
+            }
+        }
+        return dest;
+    },
+
+    /**
      * Checks if the destination folder exists and tries to create it if it does not.
      * @param {string} srcdir the project source folder path
      * @returns the destination folder path

@@ -60,6 +60,7 @@ switch (cmd) {
     case 'init':
         utils.checkProjectConfig(srcdir, cmd);
         let templateSpec = yargs.argv.t || 'default';
+        utils.checkSrcFolder(srcdir);
         let templatePath = utils.checkTemplate(gspath, templates, templateSpec);
         commands.init(gspath, srcdir, templatePath);
         break;
