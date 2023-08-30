@@ -8,5 +8,7 @@
             "default": "white"
         }
     },
+    "slideClasses": [ "normal" ],
+    "defaultClass": "normal",
     "styles": [ "googlecode.css" ]
 }

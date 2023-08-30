@@ -41,11 +41,11 @@ class GitShow {
         console.log(this.presentationConfig);
         this.main = document.getElementById('gitshow-main');
         if (config.contents) {
+            this.template = this.parseTemplate(templateData, config);
+            this.useTemplate(this.template);
             if (config.contents.length > 0) {
                 this.createContent(config.contents);
             }
-            this.template = this.parseTemplate(templateData, config);
-            this.useTemplate(this.template);
             if (config.reveal) {
                 this.updateRevealConfig(config.reveal);
             }
@@ -133,9 +133,10 @@ class GitShow {
     }
 
     createContent(contents) {
+        const defaultClass = this.template.defaultClass || 'normal';
         let sections = '';
         for (let cont of contents) {
-            sections += `<section data-markdown="${cont}" class="normal"></section>`;
+            sections += `<section data-markdown="${cont}" class="${defaultClass}"></section>`;
         }
         this.main.innerHTML = '<div class="reveal"><div class="slides">'
             + sections
