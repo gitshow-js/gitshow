@@ -1,7 +1,7 @@
 {
   "name": "@burgetr/gitshow",
   "version": "1.0.2",
-  "description": "Presentation maker from git source files",
+  "description": "Presentation maker from markdown source files",
   "main": "index.js",
   "bin": {
     "gitshow": "./gitshow.js"
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/radkovo/gitshow.git"
+    "url": "git+ssh://git@github.com/gitshow-js/gitshow.git"
   },
   "author": "Radek Burget",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/radkovo/gitshow/issues"
+    "url": "https://github.com/gitshow-js/gitshow/issues"
   },
-  "homepage": "https://github.com/radkovo/gitshow#readme",
+  "homepage": "https://github.com/gitshow-js/gitshow#readme",
   "dependencies": {
     "@babel/preset-env": "^7.22.5",
     "@rollup/plugin-babel": "^6.0.3",
