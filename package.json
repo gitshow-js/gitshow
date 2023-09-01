@@ -1,6 +1,6 @@
 {
   "name": "@burgetr/gitshow",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Presentation maker from markdown source files",
   "main": "index.js",
   "bin": {
