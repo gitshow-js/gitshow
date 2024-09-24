@@ -174,7 +174,9 @@ gulp.task('serve', () => {
 });
 
 async function createPdf(presId) {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      });
     const page = await browser.newPage();
     console.log('Opening the presentation')
     await page.goto('http://localhost:8000?print-pdf', {
