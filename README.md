@@ -6,7 +6,8 @@ GitShow provides a pre-configured (but still configurable) Reveal.js environment
 
 ## Requirements
 
-GitShow requires `node.js` and `npm` installed (e.g. from [NodeSource](https://github.com/nodesource/distributions)). Any web browser is sufficient for viewing the final presentations.
+GitShow requires `node.js` and `npm` installed, e.g. from [NodeSource](https://github.com/nodesource/distributions) (linux) or [nodejs.org](https://nodejs.org/en/download/prebuilt-installer) (windows).
+Any web browser is sufficient for viewing the final presentations.
 
 ## Installation
 
