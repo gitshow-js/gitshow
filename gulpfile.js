@@ -116,6 +116,9 @@ gulp.task('plugins', () => {
     return Promise.all([
         { name: 'RevealRewrite', input: './js/plugin/rewrite/plugin.js', output: './js/plugin/rewrite/rewrite' },
         { name: 'RevealReferences', input: './js/plugin/references/plugin.js', output: './js/plugin/references/references' },
+        { name: 'RevealLayout', input: './js/plugin/layout/plugin.js', output: './js/plugin/layout/layout' },
+        { name: 'RevealMonaco', input: './js/plugin/monaco/plugin.js', output: './js/plugin/monaco/monaco' },
+        { name: 'RevealRender', input: './js/plugin/render/plugin.js', output: './js/plugin/render/render' },
     ].map( plugin => {
         return rollup({
                 cache: cache[plugin.input],

@@ -6,6 +6,9 @@ import RevealMath from 'reveal.js/plugin/math/math.esm.js';
 
 import RevealRewrite from './plugin/rewrite/plugin.js';
 import RevealReferences from './plugin/references/plugin.js';
+import RevealRender from './plugin/render/plugin.js';
+import RevealMonaco from "./plugin/monaco/plugin.js";
+import RevealLayout from "./plugin/layout/plugin.js";
 
 //let RevealSpotlight = require('./plugin/spotlight/spotlight.js');
 
@@ -31,7 +34,17 @@ class GitShow {
         pdfMaxPagesPerSlide: 1,
         pdfSeparateFragments: false,
 
-        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath, RevealRewrite, RevealReferences],
+        plugins: [
+            RevealMarkdown,
+            RevealHighlight,
+            RevealNotes,
+            RevealMath,
+            RevealRewrite,
+            RevealReferences,
+            RevealRender,
+            RevealMonaco,
+            RevealLayout
+        ],
     };
 
     init(config, templateData) {
@@ -93,7 +106,7 @@ class GitShow {
         console.log(template);
         // use base CSS
         if (template.baseTheme) {
-            this.addStyle('/css/theme/' + template.baseTheme + '.css');
+            this.addStyle('css/theme/' + template.baseTheme + '.css');
         }
         // use custom styles
         if (template.styles) {
@@ -131,12 +144,17 @@ class GitShow {
         let deck = new Reveal(this.revealConfig);
         deck.initialize();
     }
-
+    
     createContent(contents) {
         const defaultClass = this.template.defaultClass || 'normal';
         let sections = '';
         for (let cont of contents) {
-            sections += `<section data-markdown="${cont}" class="${defaultClass}"></section>`;
+            sections += `<section
+                                data-markdown="${cont}"
+                                data-separator="^---"
+                                data-separator-vertical="^=--"
+                                class="${defaultClass}">
+                        </section>`;
         }
         this.main.innerHTML = '<div class="reveal"><div class="slides">'
             + sections
