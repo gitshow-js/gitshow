@@ -24,7 +24,18 @@ const Plugin = () => {
 				// embed code
 				let code = element.innerHTML;
 				if (code) {
+					const tags = element.getAttribute('tags') === "true" ? true : false;
+
 					let style = element.getAttribute('default-style');
+					
+					if(tags) {
+						// replace all strings which begins with &lt; and ends with &gt;
+						code = code.replace(/&lt;/g, '<span class="code-tag">&lt;').replace(/&gt;/g, '&gt;</span>');
+
+						style = (style ?? "") + 
+						` .code-tag { color: gray; font-family: monospace; font-size: 1rem; font-weight: bold; }`
+					}
+
 					code = `
 						<!DOCTYPE html>
 						<html>
