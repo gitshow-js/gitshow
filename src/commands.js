@@ -129,13 +129,13 @@ gulp.task('contents', () => {
 });
 // copies the presentation assets to the destination folder
 gulp.task('assets', () => {
-    return gulp.src([psrcdir + '/assets/**/*'])
+    return gulp.src([psrcdir + '/assets/**/*'], {encoding: false})
         .pipe(gulp.dest(pdestdir + '/assets'))
 });
 
 // copies the template from current folder to the destination folder
 gulp.task('template', () => {
-    return gulp.src([psrcdir + '/template/**/*'])
+    return gulp.src([psrcdir + '/template/**/*'], {encoding: false})
         .pipe(gulp.dest(pdestdir + '/template'))
 });
 
@@ -210,13 +210,13 @@ gulp.task('pdf', () => {
 
 // initializes the local copy of the template
 gulp.task('init-all', () => {
-    return gulp.src([ptemplate + '/**/*'])
+    return gulp.src([ptemplate + '/**/*'], {encoding: false})
         .pipe(gulp.dest(psrcdir))
 });
 
 // initializes the local copy of the template
 gulp.task('update-template', () => {
-    return gulp.src([ptemplate + '/template/**/*'])
+    return gulp.src([ptemplate + '/template/**/*'],  {encoding: false})
         .pipe(gulp.dest(psrcdir + '/template'))
 });
 
