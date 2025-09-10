@@ -3,12 +3,14 @@ import RevealMarkdown from 'reveal.js/plugin/markdown/markdown.esm.js';
 import RevealNotes from 'reveal.js/plugin/notes/notes.esm.js';
 import RevealHighlight from 'reveal.js/plugin/highlight/highlight.esm.js';
 import RevealMath from 'reveal.js/plugin/math/math.esm.js';
+import RevealSearch from 'reveal.js/plugin/search/search.esm.js';
+import RevealZoom from 'reveal.js/plugin/zoom/zoom.esm.js';
 
-import RevealRewrite from './plugin/rewrite/plugin.js';
-import RevealReferences from './plugin/references/plugin.js';
-import RevealRender from './plugin/render/plugin.js';
-import RevealMonaco from "./plugin/monaco/plugin.js";
-import RevealLayout from "./plugin/layout/plugin.js";
+import GitShowRewrite from './plugin/rewrite/plugin.js';
+import GitShowReferences from './plugin/references/plugin.js';
+import GitShowRender from './plugin/render/plugin.js';
+import GitShowMonaco from "./plugin/monaco/plugin.js";
+import GitShowLayout from "./plugin/layout/plugin.js";
 
 //let RevealSpotlight = require('./plugin/spotlight/spotlight.js');
 
@@ -17,6 +19,26 @@ class GitShow {
 
     presentationConfig = {};
     template = null;
+
+    availablePlugins = [
+        // built-in plugins
+        RevealMarkdown,
+        RevealHighlight,
+        RevealNotes,
+        RevealMath.MathJax2,
+        RevealMath.MathJax3,
+        RevealMath.KaTeX,
+        RevealSearch,
+        RevealZoom,
+        // additional GitShow plugins
+        GitShowRewrite,
+        GitShowReferences,
+        GitShowRender,
+        GitShowMonaco,
+        GitShowLayout
+    ];
+    availablePluginMap = {};
+    usedPlugins = ['markdown', 'highlight', 'notes', 'mathjax2', 'zoom', 'rewrite']; // default selection
 
     /*
         Reveal.js configuration is taken from the following sources (in the following order)
@@ -34,24 +56,18 @@ class GitShow {
         pdfMaxPagesPerSlide: 1,
         pdfSeparateFragments: false,
 
-        plugins: [
-            RevealMarkdown,
-            RevealHighlight,
-            RevealNotes,
-            RevealMath,
-            RevealRewrite,
-            RevealReferences,
-            RevealRender,
-            RevealMonaco,
-            RevealLayout
-        ],
+        plugins: [], // to be filled after all config files are loaded
     };
 
     init(config, templateData) {
         this.presentationConfig = config;
         console.log('Welcome to GitShow!');
-        console.log('https://github.com/radkovo/gitshow');
-        console.log(this.presentationConfig);
+        console.log('https://github.com/gitshow-js');
+        //console.log(this.presentationConfig);
+
+        this.initPlugins();
+        console.log('Available plugins:', Object.keys(this.availablePluginMap));
+
         this.main = document.getElementById('gitshow-main');
         if (config.contents) {
             this.template = this.parseTemplate(templateData, config);
@@ -62,10 +78,51 @@ class GitShow {
             if (config.reveal) {
                 this.updateRevealConfig(config.reveal);
             }
+            if (config.usePlugins) {
+                this.addPlugins(config.usePlugins);
+            }
             this.runReveal();
         } else {
             this.showError('Presentation config not found.');
         }
+    }
+
+    initPlugins() {
+        this.availablePluginMap = {};
+        this.availablePlugins.forEach(plugin => {
+            this.availablePluginMap[plugin().id] = plugin;
+        });
+    }
+
+    /**
+     * Adds specified plugins to the list of used plugins.
+     * @param {*} pluginIds 
+     */
+    addPlugins(pluginIds) {
+        for (const pluginId of pluginIds) {
+            if (this.availablePluginMap[pluginId]) {
+                if (!this.usedPlugins.includes(pluginId)) {
+                    this.usedPlugins.push(pluginId);
+                }
+            } else {
+                console.error(`Plugin '${pluginId}' not found.`);
+            }
+        }
+    }
+
+    /**
+     * Configures Reveal.js plugins based on the usedPlugins array.
+     */
+    populatePlugins() {
+        this.revealConfig.plugins = [];
+        this.usedPlugins.forEach(pluginId => {
+            const plugin = this.availablePluginMap[pluginId];
+            if (plugin) {
+                this.revealConfig.plugins.push(plugin);
+            } else {
+                console.error(`Plugin '${pluginId}' not found.`);
+            }
+        });
     }
 
     parseTemplate(templateData, config) {
@@ -118,6 +175,10 @@ class GitShow {
         if (template.reveal) {
             this.updateRevealConfig(template.reveal);
         }
+        // use custom plugins
+        if (template.usePlugins) {
+            this.addPlugins(template.usePlugins);
+        }
     }
 
     getPresentationConfig() {
@@ -141,6 +202,8 @@ class GitShow {
     }
 
     runReveal() {
+        this.populatePlugins();
+        console.log('Reveal config:', this.revealConfig);
         let deck = new Reveal(this.revealConfig);
         deck.initialize();
     }
