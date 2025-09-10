@@ -159,7 +159,7 @@ gulp.task('serve', () => {
             root: [pdestdir],
             port: port,
             host: host,
-            livereload: false
+            livereload: true
         });
 
         gulp.watch(['*.html', '*.md'], gulp.series('index', 'reload'));
