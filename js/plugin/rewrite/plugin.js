@@ -104,12 +104,12 @@ const Plugin = () => {
 		});
 		
 		if (rules.length === 0) {
-			console.log('RevealRewrite: WARNING: no rewrite rules defined');
+			console.log('rewrite: WARNING: no rewrite rules defined');
 		}
 	}
 
 	return {
-		id: 'RevealRewrite',
+		id: 'rewrite',
 		init: function(deck) {
 			initRewrite(deck);
 		}

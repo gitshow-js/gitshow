@@ -118,7 +118,7 @@ const Plugin = () => {
 	}
 
 	return {
-		id: 'RevealLayout',
+		id: 'layout',
 		init: function(deck) {
 			initFooter(deck);
 		}

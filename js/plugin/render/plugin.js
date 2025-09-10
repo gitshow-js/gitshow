@@ -119,7 +119,7 @@ const Plugin = () => {
 	}
 
 	return {
-		id: 'RevealRender',
+		id: 'render',
 		init: function (deck) {
 			initRender(deck);
 		}

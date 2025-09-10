@@ -90,7 +90,7 @@ const Plugin = () => {
 	}
 
 	return {
-		id: 'RevealReferences',
+		id: 'references',
 		init: function(deck) {
 			initReferences(deck);
 		}
