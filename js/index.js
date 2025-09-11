@@ -20,6 +20,11 @@ class GitShow {
     presentationConfig = {};
     template = null;
 
+    /*
+        Required plugins can be configured for each template in the template.json file or directly
+        in the presentation.json file using the usePlugins array. The default plugins are configured
+        below.
+    */
     availablePlugins = [
         // built-in plugins
         RevealMarkdown,
@@ -38,7 +43,7 @@ class GitShow {
         GitShowLayout
     ];
     availablePluginMap = {};
-    usedPlugins = ['markdown', 'highlight', 'notes', 'mathjax2', 'zoom', 'rewrite']; // default selection
+    usedPlugins = ['markdown', 'highlight', 'notes', 'zoom']; // default selection
 
     /*
         Reveal.js configuration is taken from the following sources (in the following order)
