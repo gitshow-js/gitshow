@@ -9,6 +9,8 @@
 
 const Plugin = () => {
 
+	const SLIDES_SELECTOR = '.reveal .slides section';
+
 	let config;
 
 	function processContent(reveal, slide) {
@@ -105,11 +107,26 @@ const Plugin = () => {
 		processFooter(reveal, slide);
 	}
 
+	function rewriteAllSlides(reveal) {
+		var slides = document.querySelectorAll(SLIDES_SELECTOR);
+		slides.forEach(function(slide) {
+			if (slide.classList.contains('stack')) {
+				var subslides = slide.querySelectorAll('section');
+				subslides.forEach(function(subslide) {
+					rewriteSlide(reveal, subslide);
+				});
+			} else {
+				rewriteSlide(reveal, slide);
+			}
+		});
+	}
+
 	function initFooter(reveal) {
 
 		config = reveal.getConfig().layout || {};
 
 		reveal.addEventListener('ready', function(event) {
+			rewriteAllSlides(reveal); // pre-rewrite all slides (for preview and PDF generation)
 			rewriteSlide(reveal, event.currentSlide);
 		});
 		reveal.addEventListener('slidechanged', function(event) {
