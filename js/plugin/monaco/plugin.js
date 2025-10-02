@@ -66,6 +66,8 @@ export class MonacoPlugin {
         let revealOptions = this.deck.getConfig().monaco || {};
         this.options = { ...defaultOptions, ...revealOptions };
         this.monacoBaseUrl = this.options.monacoBaseUrl;
+        let markdownOptions = this.deck.getConfig().markdown || {};
+        this.contentBaseUrl = markdownOptions.baseUrl;
         this.monacoElem = undefined;
         this.iframeElem = undefined;
         this.data = undefined;
@@ -162,7 +164,7 @@ export class MonacoPlugin {
     }
 
     async renderEditor(element) {
-        let url = element.getAttribute('data-iframe');
+        let url = this.resolveUrl(element.getAttribute('data-iframe'));
         element.classList.add("reveal-include");
         element.classList.add("editor");
         if (url) {
@@ -233,6 +235,14 @@ export class MonacoPlugin {
                 data: data,
                 url: url
             };
+        }
+    }
+
+    resolveUrl(url) {
+        if (this.contentBaseUrl && url && !url.includes("://")) {
+            return this.contentBaseUrl + url;
+        } else {
+            return url;
         }
     }
 
