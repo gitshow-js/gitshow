@@ -21,6 +21,7 @@ let currentMode = EDITOR_CLASSES.editor;
 
 let defaultOptions = {
     monacoBaseUrl: "https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0",
+    fontAwesomeBaseUrl: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css",
     selector: "code.monaco",
     defaultLanguage: "javascript",
     debug: false,
@@ -77,6 +78,7 @@ export class MonacoPlugin {
     }
 
     async init() {
+        this.installFont();
         await new Promise((resolve) =>
             this.loadScript(`${this.monacoBaseUrl}/min/vs/loader.js`, resolve)
         );
@@ -94,6 +96,16 @@ export class MonacoPlugin {
 
         // see if there is an editor on the initial slide
         this.onSlideChanged();
+    }
+
+    installFont() {
+        if (this.options.fontAwesomeBaseUrl) {
+            let link = document.createElement("link");
+            link.setAttribute("rel", "stylesheet");
+            link.setAttribute("type", "text/css");
+            link.setAttribute("href", this.options.fontAwesomeBaseUrl);
+            document.head.appendChild(link);
+        }
     }
 
     loadScript(url, callback) {
