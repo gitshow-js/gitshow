@@ -129,14 +129,12 @@ gulp.task('contents', () => {
 });
 // copies the presentation assets to the destination folder
 gulp.task('assets', () => {
-    return gulp.src([psrcdir + '/assets/**/*'], {encoding: false})
-        .pipe(gulp.dest(pdestdir + '/assets'))
+    return fs.copy(psrcdir + '/assets', pdestdir + '/assets', {dereference: true});
 });
 
 // copies the template from current folder to the destination folder
 gulp.task('template', () => {
-    return gulp.src([psrcdir + '/template/**/*'], {encoding: false})
-        .pipe(gulp.dest(pdestdir + '/template'))
+    return fs.copy(psrcdir + '/template', pdestdir + '/template', {dereference: true});
 });
 
 gulp.task('build', gulp.parallel('config', 'index', 'css', 'js', 'contents', 'assets', 'template'));
@@ -210,14 +208,12 @@ gulp.task('pdf', () => {
 
 // initializes the local copy of the template
 gulp.task('init-all', () => {
-    return gulp.src([ptemplate + '/**/*'], {encoding: false})
-        .pipe(gulp.dest(psrcdir))
+    return fs.copy(ptemplate, psrcdir, {dereference: true});
 });
 
 // initializes the local copy of the template
 gulp.task('update-template', () => {
-    return gulp.src([ptemplate + '/template/**/*'],  {encoding: false})
-        .pipe(gulp.dest(psrcdir + '/template'))
+    return fs.copy(ptemplate + '/template', psrcdir + '/template', {dereference: true});
 });
 
 // removes the local copy of the template
