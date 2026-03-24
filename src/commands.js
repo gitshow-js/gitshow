@@ -164,8 +164,10 @@ gulp.task('serve', () => {
         gulp.watch(['*.html', '*.md'], {cwd: psrcdir}, gulp.series('contents', 'reload'));
         gulp.watch(['*.json'], {cwd: psrcdir}, gulp.series('config', 'index', 'reload'));
 
-        gulp.watch(['js/**'], gulp.series('js', 'reload'))
-        gulp.watch(['templates/**'], gulp.series('template', 'reload'))
+        gulp.watch(['assets/**'], {cwd: psrcdir}, gulp.series('assets', 'reload'));
+        gulp.watch(['template/**'], {cwd: psrcdir}, gulp.series('template', 'reload'));
+
+        gulp.watch(['js/**'], gulp.series('js', 'reload'));
 
         resolve();
     });
