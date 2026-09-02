@@ -7,6 +7,7 @@
  * 
  */
 const fs = require('fs-extra');
+const net = require('net');
 
 const {rollup} = require('rollup');
 const terser = require('@rollup/plugin-terser').default;
@@ -173,13 +174,31 @@ gulp.task('serve', () => {
     });
 });
 
-async function createPdf(presId) {
+/**
+ * Asks the operating system for an unused TCP port. This allows to generate the PDF
+ * while a `gitshow serve` server is running on the default port.
+ * @param {string} host the host to bind the port on
+ * @returns a promise resolving to the port number
+ */
+function findFreePort(host) {
+    return new Promise((resolve, reject) => {
+        const probe = net.createServer();
+        probe.unref();
+        probe.on('error', reject);
+        probe.listen(0, host, () => {
+            const freePort = probe.address().port;
+            probe.close(() => resolve(freePort));
+        });
+    });
+}
+
+async function createPdf(presId, pdfPort) {
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
     const page = await browser.newPage();
     console.log('Opening the presentation')
-    await page.goto('http://localhost:8000?print-pdf', {
+    await page.goto(`http://${host}:${pdfPort}?print-pdf`, {
       waitUntil: 'networkidle2',
     });
     console.log('Creating PDF')
@@ -196,13 +215,14 @@ gulp.task('pdf', () => {
     const cfg = loadConfig();
     let presId = cfg.id || 'presentation';
     return new Promise(async (resolve, reject) => {
+        const pdfPort = await findFreePort(host);
         connect.server({
             root: [pdestdir],
-            port: 8000,
-            host: 'localhost'
+            port: pdfPort,
+            host: host
         });
 
-        await createPdf(presId);
+        await createPdf(presId, pdfPort);
         connect.serverClose();
         resolve();
     });

@@ -9,8 +9,12 @@
 const fs = require('fs-extra');
 
 const DEST = 'dist'; // target folder name
+const PDF_DEST = 'dist-pdf'; // target folder name used for PDF generation
 
 module.exports = {
+
+    DEST: DEST,
+    PDF_DEST: PDF_DEST,
 
     /**
      * Checks whether the project directory contains (or does not contain) an appropriate presentation config. Aborts the script
@@ -76,10 +80,11 @@ module.exports = {
     /**
      * Checks if the destination folder exists and tries to create it if it does not.
      * @param {string} srcdir the project source folder path
+     * @param {string} destName the destination folder name (DEST by default)
      * @returns the destination folder path
      */
-    checkDestFolder(srcdir) {
-        const dest = srcdir + '/' + DEST;
+    checkDestFolder(srcdir, destName = DEST) {
+        const dest = srcdir + '/' + destName;
         if (!fs.existsSync(dest)) {
             fs.mkdirSync(dest);
             if (!fs.existsSync(dest)) {
@@ -91,13 +96,15 @@ module.exports = {
     },
 
     /**
-     * Deletes the destination folder.
+     * Deletes the destination folders (including the one used for PDF generation).
      * @param {string} srcdir the project source folder path
      */
     cleanDestFolder(srcdir) {
-        const dest = srcdir + '/' + DEST;
-        if (fs.existsSync(dest)) {
-            fs.rmSync(dest, {recursive: true, force: true});
+        for (const destName of [DEST, PDF_DEST]) {
+            const dest = srcdir + '/' + destName;
+            if (fs.existsSync(dest)) {
+                fs.rmSync(dest, {recursive: true, force: true});
+            }
         }
     }
 

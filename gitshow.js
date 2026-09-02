@@ -87,7 +87,8 @@ switch (cmd) {
         break;
     case 'pdf':
         utils.checkProjectConfig(srcdir, cmd);
-        destdir = utils.checkDestFolder(srcdir);
+        // use a separate destination folder so that a running 'serve' is not disturbed
+        destdir = utils.checkDestFolder(srcdir, utils.PDF_DEST);
         process.chdir(gspath);
         commands.pdf(gspath, srcdir, destdir);
         break;
