@@ -278,9 +278,13 @@ module.exports = {
         ])();
     },
 
-    serve(gspath, srcdir, destdir) {
+    serve(gspath, srcdir, destdir, servePort = null) {
         psrcdir = srcdir;
         pdestdir = destdir;
+        if (servePort) {
+            port = servePort;
+        }
+        console.log('Serving the presentation on http://%s:%d', host, port);
         gulp.series([
             gulp.task('build'), 
             gulp.task('serve')

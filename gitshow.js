@@ -22,7 +22,7 @@ const HELP = `Usage: gitshow.sh <command> [<presentation_folder>]
 Commands:
   init [-t template] -- create a new presentation
   reset [-t template] -- reset the used template
-  serve -- run live server
+  serve [-p port] -- run live server (default port 8000)
   package -- package the complete presentation
   pdf -- create PDF
   clean -- clean the project (remove the generated files)
@@ -76,8 +76,13 @@ switch (cmd) {
     case 'serve':
         utils.checkProjectConfig(srcdir, cmd);
         destdir = utils.checkDestFolder(srcdir);
+        let servePort = null;
+        let portSpec = yargs.argv.port || yargs.argv.p;
+        if (portSpec !== undefined && portSpec !== null) {
+            servePort = utils.checkPort(portSpec);
+        }
         process.chdir(gspath);
-        commands.serve(gspath, srcdir, destdir);
+        commands.serve(gspath, srcdir, destdir, servePort);
         break;
     case 'package':
         utils.checkProjectConfig(srcdir, cmd);

@@ -37,6 +37,20 @@ module.exports = {
         }
     },
 
+    /**
+     * Checks whether the given value is a valid TCP port number. Aborts the script when it is not.
+     * @param {string|number} portSpec the port number specification to check
+     * @returns the port number
+     */
+    checkPort(portSpec) {
+        let port = Number(portSpec);
+        if (!Number.isInteger(port) || port < 1 || port > 65535) {
+            console.error(`Invalid port number: ${portSpec}. Use an integer between 1 and 65535.`);
+            process.exit(7);
+        }
+        return port;
+    },
+
     checkTemplate(srcdir, templates, templateSpec) {
         let templatePath = templateSpec;
         if (templates.index[templateSpec]) {
