@@ -201,6 +201,17 @@ async function createPdf(presId, pdfPort) {
     await page.goto(`http://${host}:${pdfPort}?print-pdf`, {
       waitUntil: 'networkidle2',
     });
+    // Network idle does not mean the presentation is laid out: Reveal.js activates its
+    // print view on `window.load` and dispatches `ready` afterwards, and the plugins that
+    // restructure the slides (`layout` wraps them in header/content/footer) only run on
+    // `ready`. Printing before that produces a PDF of the raw, unwrapped slides -- no
+    // header padding or border, no footer, wrong content font size. Wait for both.
+    await page.waitForFunction(() => {
+        const deck = document.querySelector('.reveal');
+        return document.documentElement.classList.contains('print-pdf')
+            && deck !== null && deck.classList.contains('ready');
+    }, { timeout: 30000 });
+    await page.evaluate(() => document.fonts.ready);
     console.log('Creating PDF')
     await page.pdf({
       path: psrcdir + '/' + presId + '.pdf',
