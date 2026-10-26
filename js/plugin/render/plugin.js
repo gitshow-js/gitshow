@@ -16,10 +16,37 @@ const Plugin = () => {
 			if (url) {
 				// embed iframe
 				let iframe = document.createElement('iframe');
-				iframe.setAttribute('src', url);
-				iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
+				iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-modals');
 				element.innerHTML = ''; // clear the element
 				element.appendChild(iframe);
+
+				if (url.includes('://')) {
+					// external URL -- navigate directly (works cross-origin, unlike fetch)
+					iframe.setAttribute('src', url);
+				} else {
+					// local URL -- fetch and write the content into the iframe instead of
+					// navigating directly, so relative paths inside it resolve against the
+					// presentation's own base URL (same as the data-iframe/monaco mechanism),
+					// not against this file's own nested directory
+					fetch(url).then(response => {
+						if (!response.ok) {
+							throw new Error(`${response.status} ${response.statusText}`);
+						}
+						return response.text();
+					}).catch(error => {
+						// show the error inside the iframe instead of leaving it blank
+						console.error('render: failed to load', url, error);
+						return `<p style="font-family: sans-serif; color: #c00;">Failed to load <code>${url}</code>: ${error.message}</p>`;
+					}).then(html => {
+						iframe.onload = () => {
+							const doc = iframe.contentDocument || iframe.contentWindow.document;
+							doc.open();
+							doc.write(html);
+							doc.close();
+						};
+						iframe.src = 'about:blank';
+					});
+				}
 			} else {
 				// embed code
 				let code = element.innerHTML;
